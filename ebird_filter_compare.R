@@ -1,3 +1,4 @@
+## Required packages
 library(magrittr)
 library(plyr)
 library(dplyr)
@@ -8,71 +9,32 @@ library(parallel)
 #library(doParallel)
 #registerDoParallel(cluster)
 
-## Portions of filter titles to be deleted
+# Portions of filter titles to be deleted
 filter_prefix <- 'Washington--'
 filter_suffix <- ' Count.*'
-
-## Custom order to facilitate comparing similar regions
-ordered_regions <- c(
-  'Whatcom',
-  'Skagit',
-  'Snohomish',
-  'King',
-  'Pierce',
-  'Lewis',
-  'Thurston',
-  'Mason',
-  'Kitsap',
-  'Island',
-  'San Juan',
-  'Clallam',
-  'Jefferson',
-  'Grays Harbor',
-  'Pacific',
-  'Wahkiakum',
-  'Cowlitz',
-  'Clark',
-  'Skamania',
-  'Klickitat',
-  'Yakima',
-  'Kittitas',
-  'Chelan',
-  'Okanogan',
-  'Douglas',
-  'Grant',
-  'Lincoln',
-  'Adams',
-  'Franklin',
-  'Benton',
-  'Walla Walla',
-  'Southeast',
-  'Whitman',
-  'Spokane',
-  'Pend Oreille',
-  'Stevens',
-  'Ferry')
-
-## Import eBird taxonomy
-tax <- read.csv("eBird_Taxonomy_v2016.csv",stringsAsFactors=F)
 
 ## Get filter filenames
 files <- list.files('filter_htm')
 ## Read filter region names from HTML
-makeCluster(max(1,detectCores()-1),type="FORK") -> cluster
-#makeCluster(max(1,detectCores()-1),type="PSOCK") -> cluster #Windows PC
-regions <-
-  parSapply(cluster,files,function(x){
+regions <- 
+  sapply(files,function(x){ # Easily parallelized but not worth it
     read_html(paste0('filter_htm/',x)) %>%
       html_nodes(css='#cl_name') %>% html_text
   }) %>%
   unname %>%
   gsub(filter_prefix,"",.) %>%
   gsub(filter_suffix,"",.)
-stopCluster(cluster)
+write.csv(data.frame(REGION_NAME=regions),'regions.csv',row.names=F)
+
+## Custom order to facilitate comparing similar regions
+ordered_regions <- read.csv('ordered_regions.csv',stringsAsFactors=F,header=T)[,1]
+
+## Import eBird taxonomy
+tax <- read.csv("eBird_Taxonomy_v2016.csv",stringsAsFactors=F)
 
 ## Check that custom region order vector is correct
-#regions %in% ordered_regions
-#ordered_regions %in% regions
+regions %in% ordered_regions
+ordered_regions %in% regions
 
 ## Get full taxa list from each filter
 taxa <- sapply(regions,function(x) NULL)
@@ -170,7 +132,7 @@ for (file in files){
 #                   gsub(" ","_",.)
 # )
 
-pdf(paste0("output/WA_species.pdf"),onefile=T,10,14)
+pdf(paste0("output/taxa.pdf"),onefile=T,10,14)
 
 #s <- "Stilt Sandpiper"   # For testing
 
