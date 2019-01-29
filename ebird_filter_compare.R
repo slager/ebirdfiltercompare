@@ -30,7 +30,7 @@ write.csv(data.frame(REGION_NAME=regions),'regions.csv',row.names=F)
 ordered_regions <- read.csv('ordered_regions.csv',stringsAsFactors=F,header=T)[,1]
 
 ## Import eBird taxonomy
-tax <- read.csv("eBird_Taxonomy_v2016.csv",stringsAsFactors=F)
+tax <- read.csv("eBird_Taxonomy_v2018_14Aug2018.csv",stringsAsFactors=F)
 
 ## Check that custom region order vector is correct
 regions %in% ordered_regions
@@ -118,6 +118,10 @@ for (file in files){
       }} # End big for loop
 ) # sys.time closure
 
+## Save the data that took so long to scrape together
+saveRDS(data,"filter_data.RDS")
+#readRDS("filter_data.RDS") -> data #Load the file
+
 ## Make filename-friendly taxon names and taxonomic orders
 # tax_output <-
 # tax %>%
@@ -174,7 +178,7 @@ extend_matrix <- function(m) {
   out
 }
 
-pdf(paste0("output/taxa.pdf"),onefile=T,10,14)
+pdf(paste0("output/taxa.pdf"),onefile=T,10,14) #Can adjust PDF paper size as needed
 
 #s <- "Stilt Sandpiper"   # For testing
 
@@ -199,7 +203,7 @@ limits <- lapply(rev(ordered_regions),function(x){
 #pdf(paste0("output/",formatC(ord,format='d'),"_",fnm,".pdf"),10,14)
 
 ## Barplot
-par(mar=c(1.1,9.1,2.1,1.1))
+par(mar=c(1.1,6.1,2.1,1.1)) #Can adjust left margin value (6.1) higher if your region mames are long
 colors <- get_colors(limits)
 m_extend <- extend_matrix(m)
 b <- barplot(m_extend,beside=F,horiz=T,axes=F,col=colors,space=0.6)
