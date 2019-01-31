@@ -99,15 +99,14 @@ If you see error messages, it probably means you need to proofread your ordered 
 
 ## 5.  Make sure the taxonomy is pointing at the correct file.
 
-If it's before August 2019, you can skip this entire step. If you are reading this in the distant future, after August 2019, and you've downloaded the eBird taxonomy version 2019 or later, you'll also need to correct the text below in the "import\_taxonomy" function inside the source code file, functions.R, to point to it.
+If it's before August 2019, you can skip this entire step. If you are reading this in the distant future, after August 2019, and you've downloaded the eBird taxonomy version 2019 or later, you'll need to adjust this line in the code to point to the correct taxonomy filename.
 ```
-##Import eBird taxonomy
-tax <- read.csv("eBird_Taxonomy_v2018_14Aug2018.csv",stringsAsFactors=F)
+"eBird_Taxonomy_v2018_14Aug2018.csv" -> taxonomy_filename
 ```
 
 ## 6. Run the code to crunch your filter comparisons!
 
-At this point, you should be able to run the rest of the script file (or even the entire thing all at once) and await your glorious filter comparison chart.
+At this point, you should be able to run the last chunk of the script file (or even the entire script file all at once) and await your glorious filter comparison chart.
 
 If you see any red text or error messages in the output and it stops within the first minute, you probably need to fix an error.
 
