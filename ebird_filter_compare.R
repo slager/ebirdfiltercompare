@@ -72,10 +72,10 @@ lapply(species,function(x){
 
 
 ## Fill with data from filters
-system.time({ #(Takes 1/2 hour -- Should parallelize/make more efficient code)
-## For each filter...
-cat(paste(length(files),"filters to crunch"))
+cat("Started crunching filters at",paste(Sys.time()),"\n")
+cat(length(files),"filters to crunch","\n")
 0 -> tracker
+## For each filter...
 for (file in files){
   Sys.time() -> begin_time
   html <- read_html(paste0('filter_htm/',file))
@@ -124,15 +124,11 @@ for (file in files){
   tracker + 1 -> tracker
   Sys.time() -> end_time
   if (tracker==1){
-    cat("\n")
-    cat(paste("It took",as.numeric(difftime(end_time,begin_time)),"sec to crunch 1 filter"))
-    cat("\n")
-    cat(paste("Estimated",as.numeric(difftime(end_time,begin_time,units="mins")*length(files)),"min to crunch all filters"))
+    cat("It took",as.numeric(difftime(end_time,begin_time)),"sec to crunch 1 filter","\n")
+    cat("Estimated",as.numeric(difftime(end_time,begin_time,units="mins")*length(files)),"min to crunch all filters","\n")
   }
-  cat("\n")
-  cat(paste(tracker,"filters crunched"))
+  cat(tracker,"filters crunched","\n")
   } # End big for loop
-}) # sys.time closure
 
 ## Save the data that took so long to scrape together
 saveRDS(data,"filter_data.RDS")
