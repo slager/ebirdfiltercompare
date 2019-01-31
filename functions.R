@@ -68,7 +68,7 @@ check_regions <- function(){
 import_taxonomy <- function(){
 ## Import eBird taxonomy
 cat("...done","\n")
-read.csv("eBird_Taxonomy_v2018_14Aug2018.csv",stringsAsFactors=F)
+read.csv(taxonomy_filename,stringsAsFactors=F)
 }
 
 compile_taxonomy <- function(){

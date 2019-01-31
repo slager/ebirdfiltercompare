@@ -5,11 +5,15 @@
 #install.packages('rvest')
 
 
+####
+
 
 ## Specify portions of filter names to be deleted
 filter_prefix <- 'Washington--'
 filter_suffix <- ' Count.*'
 
+
+####
 
 
 ## Load the required functions
@@ -25,6 +29,8 @@ get_filenames() -> files
 export_region_list_for_ordering() -> regions
 
 
+####
+
 
 ## Import manually ordered list of regions
 import_ordered_region_list() -> ordered_regions
@@ -33,9 +39,16 @@ import_ordered_region_list() -> ordered_regions
 check_regions()
 
 
+####
+
 
 ## Import the latest eBird taxonomy
+"eBird_Taxonomy_v2018_14Aug2018.csv" -> taxonomy_filename
 import_taxonomy() -> tax
+
+
+####
+
 
 ## Compile the taxa from the list of filters
 compile_taxonomy() -> species
