@@ -72,9 +72,12 @@ lapply(species,function(x){
 
 
 ## Fill with data from filters
-system.time( #(Takes 1/2 hour -- Should parallelize/make more efficient code)
+system.time({ #(Takes 1/2 hour -- Should parallelize/make more efficient code)
 ## For each filter...
+cat(paste(length(files),"filters to crunch"))
+0 -> tracker
 for (file in files){
+  Sys.time() -> begin_time
   html <- read_html(paste0('filter_htm/',file))
   r <- # Region name
     html %>%
@@ -93,32 +96,43 @@ for (file in files){
     tax %>% filter(PRIMARY_COM_NAME %in% species_list) %>% use_series(SPECIES_CODE)
   for (i in 1:length(codes)){
     ## Use CSS selectors to scrape data from HTML
+    # Save nodeset1
+    nodeset1 <- html %>% html_nodes(css=paste0('#',codes[i],'_out'))
     data[[species_list[i]]][[r]][['widths']] <-
-      html %>%
-      html_nodes(css=paste0('#',codes[i],'_out')) %>%
+      nodeset1 %>%
       html_nodes(css='td[style]') %>%
       html_attr('style') %>%
       gsub('width:',"",.) %>%
       gsub('%',"",.) %>%
       as.numeric
     data[[species_list[i]]][[r]][['dates']] <-
-      html %>%
-      html_nodes(css=paste0('#',codes[i],'_out')) %>%
+      nodeset1 %>%
       html_nodes(css='.dt') %>%
       html_text
+    # Save nodelim
+    nodelim <- html_nodes(nodeset1,css='input[class^="lim"]')
     data[[species_list[i]]][[r]][['limits']] <-
-      html %>%
-      html_nodes(css=paste0('#',codes[i],'_out')) %>%
-      #html_nodes(css='input[class^="lim"], span[class^="lim"]') %>%
-      { if (length(html_nodes(.,css='input[class^="lim"]')) > 0){
-        html_nodes(.,css='input[class^="lim"]') %>% html_attr('value')
+      nodeset1 %>%
+      { if (length(nodelim) > 0){
+        nodelim %>% html_attr('value')
         } else {
         html_nodes(.,css='span[class^="lim"]') %>% html_text}
       } %>%
       as.numeric
     data[[species_list[i]]][[r]][['nsections']] <- length(data[[species_list[i]]][[r]][['limits']])
-      }} # End big for loop
-) # sys.time closure
+  }
+  tracker + 1 -> tracker
+  Sys.time() -> end_time
+  if (tracker==1){
+    cat("\n")
+    cat(paste("It took",as.numeric(difftime(end_time,begin_time)),"sec to crunch 1 filter"))
+    cat("\n")
+    cat(paste("Estimated",as.numeric(difftime(end_time,begin_time,units="mins")*length(files)),"min to crunch all filters"))
+  }
+  cat("\n")
+  cat(paste(tracker,"filters crunched"))
+  } # End big for loop
+}) # sys.time closure
 
 ## Save the data that took so long to scrape together
 saveRDS(data,"filter_data.RDS")
