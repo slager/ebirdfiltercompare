@@ -46,10 +46,6 @@ check_regions()
 "eBird_Taxonomy_v2018_14Aug2018.csv" -> taxonomy_filename
 import_taxonomy() -> tax
 
-
-####
-
-
 ## Compile the taxa from the list of filters
 compile_taxonomy() -> species
 
