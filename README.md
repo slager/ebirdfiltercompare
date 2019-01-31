@@ -1,4 +1,6 @@
 ## This script is designed to be used by eBird Regional Editors to easily visualize differences among taxa filters in your regions.
+
+![BTYW example](https://github.com/slager/ebird_filter_compare/blob/master/btyw.png)
  
 To get the required files, click "Clone or Download" above, then go find the zipped file on your computer, and unzip the contents into a new folder, which is by default named "ebird\_filter\_compare-master".
 
