@@ -1,13 +1,15 @@
-## Required packages
+## Install required packages (if needed)
+
+#install.packages('magrittr')
+#install.packages('plyr')
+#install.packages('dplyr')
+#install.packages('rvest')
+
+## Load required packages
 library(magrittr)
 library(plyr)
 library(dplyr)
-#library(httr)
 library(rvest)
-library(parallel)
-#library(foreach)
-#library(doParallel)
-#registerDoParallel(cluster)
 
 # Portions of filter titles to be deleted
 filter_prefix <- 'Washington--'
