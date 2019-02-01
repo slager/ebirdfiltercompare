@@ -109,7 +109,7 @@ cat("Preparing data structure...","\n")
           dates="Jan 1",
           limits=as.integer(NA),
           nsections=1L)
-      }) %>% setNames(regions)
+      }) %>% setNames(ordered_regions)
     }) %>% setNames(species)
 ## Fill with data from filters
 cat("Started crunching filters at",paste(Sys.time()),"\n")
