@@ -109,7 +109,7 @@ cat("Preparing data structure...","\n")
           dates="Jan 1",
           limits=as.integer(NA),
           nsections=1L)
-      }) %>% setNames(regions)
+      }) %>% setNames(ordered_regions)
     }) %>% setNames(species)
 ## Fill with data from filters
 cat("Started crunching filters at",paste(Sys.time()),"\n")
@@ -214,6 +214,7 @@ get_colors <- function(m) {
   # colors <- get_cols(8)
 
   colors   <- colors[findInterval(m, c(0, 1, 6, 11, 51, 101, 1001, 10001, Inf))]
+  colors[is.na(colors)] <- "lightgray"
   colors
 }
 
