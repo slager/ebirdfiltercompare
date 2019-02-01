@@ -214,6 +214,7 @@ get_colors <- function(m) {
   # colors <- get_cols(8)
 
   colors   <- colors[findInterval(m, c(0, 1, 6, 11, 51, 101, 1001, 10001, Inf))]
+  colors[is.na(colors)] <- "lightgray"
   colors
 }
 
