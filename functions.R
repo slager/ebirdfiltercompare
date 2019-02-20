@@ -20,6 +20,7 @@ cat("...done","\n")
 get_filenames <- function(){
 ## Get filter filenames
 files <- list.files('filter_htm')
+cat("Found",length(files),"files in filter_htm folder","\n")
 files
 }
 
