@@ -101,7 +101,7 @@ If you see error messages, it probably means you need to proofread your ordered 
 
 If it's before August 2019, you can skip this entire step. If you are reading this in the distant future, after August 2019, and you've downloaded the eBird taxonomy version 2019 or later, you'll need to adjust this line in the code to point to the correct taxonomy filename.
 ```
-"eBird_Taxonomy_v2018_14Aug2018.csv" -> taxonomy_filename
+"eBird_Taxonomy_v2018_14Aug2018_utf8.csv" -> taxonomy_filename
 ```
 
 ## 6. Run the code to crunch your filter comparisons!
