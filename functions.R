@@ -165,7 +165,7 @@ for (file in files){
   tracker + 1 -> tracker
   Sys.time() -> end_time
   if (tracker==1){
-    cat("It took",as.numeric(difftime(end_time,begin_time)),"sec to crunch 1 filter","\n")
+    cat("It took",as.numeric(difftime(end_time,begin_time,units="secs")),"sec to crunch 1 filter","\n")
     cat("Estimated",as.numeric(difftime(end_time,begin_time,units="mins")*length(files)),"min to crunch all filters","\n")
   }
   cat(tracker,"filters crunched","\n")
