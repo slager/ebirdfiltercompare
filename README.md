@@ -2,7 +2,7 @@
 
 ![BTYW example](https://github.com/slager/ebird_filter_compare/blob/master/btyw.png)
  
-To get the required files, click "Clone or Download" above, then go find the zipped file on your computer, and unzip the contents into a new folder, which is by default named "ebird\_filter\_compare-master".
+To get the required files, click "Clone or Download" above, then go find the zipped file on your computer, and unzip (extract) the contents, which will appear in a new folder named something like "ebird\_filter\_compare-master".
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -26,11 +26,13 @@ Select 'Webpage, HTML Only'
 
 After you have done this, take a second to double check you have the right number of files saved in this folder --  you should have as many files as you have filters for your region or else it will cause trouble!
 
-## 2. Setup RStudio
+## 2. Setup R and RStudio
 
-### 2a. Download and install [R Studio](https://www.rstudio.com/).
+### 2a. If you have not previously installed R on your computer, [download and install R here](https://cran.r-project.org/). You'll first follow the link to your operating system (Windows, Mac, or Linux). Windows users will want to click on the link for the "base" version, and Mac users will want to click the version named R-3.x.x.pkg. Once the file downloads, install it on your computer the way you normally would.
 
-### 2b. Create an RStudio project
+### 2b. Download and install the appropriate [R Studio](https://www.rstudio.com/) version for your operating system.
+
+### 2c. Create an RStudio project
 
 Open RStudio, select File > New Project..., choose "Existing Directory", and select the directory to the folder your files are in (ebird\_filter\_compare-master). Press the "Create Project" button.
 
