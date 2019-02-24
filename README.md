@@ -28,9 +28,13 @@ After you have done this, take a second to double check you have the right numbe
 
 ## 2. Setup R and RStudio
 
-### 2a. If you have not previously installed R on your computer, [download and install R here](https://cran.r-project.org/). You'll first follow the link to your operating system (Windows, Mac, or Linux). Windows users will want to click on the link for the "base" version, and Mac users will want to click the version named R-3.x.x.pkg. Once the file downloads, install it on your computer the way you normally would.
+### 2a. [Download and install R](https://cran.r-project.org/).
 
-### 2b. Download and install the appropriate [R Studio](https://www.rstudio.com/) version for your operating system.
+This step is only necessary if you have not previously installed R on your computer. You'll first follow the above link to your operating system (Windows, Mac, or Linux). Windows users will want to click on the link for the "base" version, and Mac users will want to click the version named R-3.x.x.pkg. Once the file downloads, install it on your computer the way you normally would.
+
+### 2b. Download and install [R Studio](https://www.rstudio.com/).
+
+This is only necessary if you don't already have RStudio on your computer. Select the version that corresponds to your operating system, and install it the way you normally would.
 
 ### 2c. Create an RStudio project
 
