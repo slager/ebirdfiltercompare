@@ -44,11 +44,11 @@ This is only necessary if you don't already have RStudio on your computer. Selec
 
 Open RStudio, select File > New Project..., choose "Existing Directory", and select the directory to the folder your files are in (ebird\_filter\_compare-master). Press the "Create Project" button.
 
-### 2c. Open the script in RStudio
+### 2d. Open the script in RStudio
 
 Go to File > Open File... and select "ebird\_filter\_compare.R"
 
-### 2d. Install required R packages
+### 2e. Install required R packages
 
 On your first time running the script you'll need to install required packages. To do this, remove the initial "#" symbol from each of the following lines. Next, select the first of these lines, and then go to Code > Run Selected Lines. You will see the progress of the package being downloaded and installed in the RStudio Console pane. Repeat for all 4 lines. It usually takes less than 2 minutes per package. We recommend installing these packages one at a time because several people have had trouble running these all at once.
 
@@ -61,7 +61,7 @@ On your first time running the script you'll need to install required packages. 
 
 If this didn't work, you can also try going to Tools -> Install Packages in RStudio, and try to install the above 4 packages that way.
 
-### 2e. Re-add the "#" symbols to the above 4 lines
+### 2f. Re-add the "#" symbols to the above 4 lines
 
 Do this once the packages have been installed. This disables those lines of code so that you won't accidentally re-install the packages later. 
 
