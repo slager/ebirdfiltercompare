@@ -2,19 +2,23 @@
 
 ![BTYW example](https://github.com/slager/ebird_filter_compare/blob/master/btyw.png)
  
-To get the required files, click "Clone or Download" above, then go find the zipped file on your computer, and unzip (extract) the contents, which will appear in a new folder named something like "ebird\_filter\_compare-master".
-
 -------------------------------------------------------------------------------------------------------------------
+
+
 
 ## 1. Set up the files you'll need
 
+### 1a. Download files from GitHub
+
+Click "Clone or Download" above, then go find the zipped file on your computer, and unzip (extract) the contents, which will appear in a new folder named something like "ebird\_filter\_compare-master". You can now delete the original Zip file if you like.
+
 *Note: The download comes pre-loaded with files for Washington State, USA. If you run it as is for practice, you'll get a nice full-size chart, but it will take about half an hour to run. If you'd like to practice, we suggest deleting all but 3 Washington filters in the filter folder and list (you will learn about this below) and running it like that so that you know it's working. If you have no interest in practice and want to jump into action, you can ignore running it with practice Washington data and skip straight to replacing these lines with your regional files as directed below.*
- 
-### 1a. Check to see if the eBird Taxonomy is current.
+  
+### 1b. Check to see if the eBird Taxonomy is current.
 
-Make sure the folder (ebird\_filter\_compare-master) contains the current eBird taxonomy in csv format (e.g. eBird\_Taxonomy\_v2018\_14Aug2018.csv). This readme was written in early 2019, so as of this writing, if it is after August 2019, you will have to download the new taxonomy.
+Make sure the folder (ebird\_filter\_compare-master) contains the current eBird taxonomy in csv format (e.g. eBird\_Taxonomy\_v2018\_14Aug2018_utf8.csv). This readme was written in early 2019, so as of this writing, if it is after August 2019, you will have to download the new taxonomy.
 
-### 1b. Download the eBird filters for your region.
+### 1c. Download the eBird filters for your region.
 
 There is a subfolder called filter\_htm where you will need to save a copy of your current eBird filters. Note that right now this is full of Washington State, USA filter files if you want to use those for a test run, but you should replace it with your own files when ready to run the script for your region. To run it for your region, first delete all the example files from the folder. Then, using Google Chrome or Mozilla Firefox, log in to eBird Admin, and go to the filters tab. To download each one:
 
