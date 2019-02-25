@@ -50,7 +50,7 @@ Go to File > Open File... and select "ebird\_filter\_compare.R"
 
 ### 2d. Install required R packages
 
-On your first time running the script you'll need to install required packages. To do this, remove the initial "#" symbol from each of the following lines. Next, select the first of these lines, and then go to Code > Run Selected Lines. You will see the progress of the package being downloaded and installed in the RStudio Console pane. It usually takes less than 2 minutes. We recommend installing these packages one at a time because several people have had trouble running these all at once.
+On your first time running the script you'll need to install required packages. To do this, remove the initial "#" symbol from each of the following lines. Next, select the first of these lines, and then go to Code > Run Selected Lines. You will see the progress of the package being downloaded and installed in the RStudio Console pane. Repeat for all 4 lines. It usually takes less than 2 minutes per package. We recommend installing these packages one at a time because several people have had trouble running these all at once.
 
 ```
 #install.packages('magrittr')
