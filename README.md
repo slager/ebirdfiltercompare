@@ -108,7 +108,7 @@ import_ordered_region_list() -> ordered_regions
 ## Check ordered_regions vs. regions for consistency
 check_regions()
 ```
-If you see error messages, it probably means you need to proofread your ordered list of filters, or the number of filter HTML files you have downloaded, because they don't match.
+If you see error messages or any instances of FALSE in the output, it probably means you need to proofread your ordered list of filters, or the number of filter HTML files you have downloaded, because they don't match.
 
 ## 5.  Make sure the taxonomy is pointing at the correct file.
 
