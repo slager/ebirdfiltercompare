@@ -50,7 +50,7 @@ Go to File > Open File... and select "ebird\_filter\_compare.R"
 
 ### 2d. Install required R packages
 
-On your first time running the script you'll need to install required packages. To do this, remove the initial "#" symbol from each of the following lines. Next, select these lines, and then go to Code > Run Selected Lines. You will see the progress of the packages being downloaded and installed in the RStudio Console pane. It usually takes less than 2 minutes.
+On your first time running the script you'll need to install required packages. To do this, remove the initial "#" symbol from each of the following lines. Next, select the first of these lines, and then go to Code > Run Selected Lines. You will see the progress of the package being downloaded and installed in the RStudio Console pane. It usually takes less than 2 minutes. We recommend installing these packages one at a time because several people have had trouble running these all at once.
 
 ```
 #install.packages('magrittr')
@@ -58,9 +58,12 @@ On your first time running the script you'll need to install required packages. 
 #install.packages('dplyr')
 #install.packages('rvest')
 ```
+
+If this didn't work, you can also try going to Tools -> Install Packages in RStudio, and try to install the above 4 packages that way.
+
 ### 2e. Re-add the "#" symbols to the above 4 lines
 
-Do this once the packages have been installed. This disables those lines of code so that you won't accidentally re-install the packages later.
+Do this once the packages have been installed. This disables those lines of code so that you won't accidentally re-install the packages later. 
 
 ## 3. Check filter names and choose filter order
 
