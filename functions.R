@@ -49,11 +49,11 @@ ordered_regions
 
 check_regions <- function(){
   if (!all(regions %in% ordered_regions)){
-    message("Not all regions found in ordered regions:")
+    message("Error: Not all regions found in ordered regions:")
     print(regions %in% ordered_regions)
   }
   if (!all(ordered_regions %in% regions)){
-    message("Not all ordered regions found in regions:")
+    message("Error: Not all ordered regions found in regions:")
     print(ordered_regions %in% regions)
   }
   cat("Region name check complete.","\n","Found",length(ordered_regions),"ordered regions:","\n")
