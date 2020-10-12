@@ -20,6 +20,8 @@ Make sure the folder (ebird\_filter\_compare-master) contains the current eBird 
 
 ### 1c. Download the eBird filters for your region.
 
+*Note: Google Chrome browser seems to be saving html files in a weird way, so we recommend using Firefox to save html files*
+
 There is a subfolder called filter\_htm where you will need to save a copy of your current eBird filters. Note that right now this is full of Washington State, USA filter files if you want to use those for a test run, but you should replace it with your own files when ready to run the script for your region. To run it for your region, first delete all the example files from the folder. Then, using Google Chrome or Mozilla Firefox, log in to eBird Admin, and go to the filters tab. To download each one:
 
 Right-click on filter page > "View Page Source"
