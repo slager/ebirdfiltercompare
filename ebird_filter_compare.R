@@ -43,7 +43,7 @@ check_regions()
 
 
 ## Import the latest eBird taxonomy
-"eBird_Taxonomy_v2018_14Aug2018_utf8.csv" -> taxonomy_filename
+"eBird_Taxonomy_v2022.csv" -> taxonomy_filename
 import_taxonomy() -> tax
 
 ## Compile the taxa from the list of filters
