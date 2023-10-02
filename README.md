@@ -32,6 +32,8 @@ Select 'Webpage, HTML Only'
 
 After you have done this, take a second to double check you have the right number of files saved in this folder --  you should have as many files as you have filters for your region or else it will cause trouble!
 
+You may also need to manually rename files from something.html to something_html
+
 ## 2. Setup R and RStudio
 
 ### 2a. [Download and install R](https://cran.r-project.org/).
