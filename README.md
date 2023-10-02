@@ -114,9 +114,9 @@ If you see error messages or any instances of FALSE in the output, it probably m
 
 ## 5.  Make sure the taxonomy is pointing at the correct file.
 
-If it's before August 2019, you can skip this entire step. If you are reading this in the distant future, after August 2019, and you've downloaded the eBird taxonomy version 2019 or later, you'll need to adjust this line in the code to point to the correct taxonomy filename.
+After fall 2023, you'll need to adjust this line in the code to point to the correct taxonomy filename (saved as csv, utf8).
 ```
-"eBird_Taxonomy_v2018_14Aug2018_utf8.csv" -> taxonomy_filename
+"eBird_Taxonomy_v2022.csv" -> taxonomy_filename
 ```
 
 ## 6. Run the code to crunch your filter comparisons!
