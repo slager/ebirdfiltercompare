@@ -16,7 +16,7 @@ Click "Clone or Download" above, then go find the zipped file on your computer, 
   
 ### 1b. Check to see if the eBird Taxonomy is current.
 
-Make sure the folder (ebird\_filter\_compare-master) contains the current eBird taxonomy in csv format (e.g. eBird\_Taxonomy\_v2018\_14Aug2018_utf8.csv). This readme was written in early 2019, so as of this writing, if it is after August 2019, you will have to download the new taxonomy.
+Make sure the folder contains the current eBird taxonomy in utf8 format as a csv. If it is after fall 2023, you will have to download the new taxonomy.
 
 ### 1c. Download the eBird filters for your region.
 
