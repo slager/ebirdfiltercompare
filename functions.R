@@ -80,9 +80,7 @@ for (i in 1:length(files)){
     taxa[[regions[i]]] <-
       read_html(paste0('filter_htm/',files[i])) %>%
       html_nodes(css='div[class="snam"]') %>%
-      gsub('<div class="snam">',"",.) %>%
-      gsub(' <em.*',"",.) %>%
-      gsub('</div>',"",.)
+      html_text
 }
 
 ## Collect unique taxa
@@ -130,9 +128,7 @@ for (file in files){
   species_list <- # Species list for region
     html %>%
     html_nodes(css='div[class="snam"]') %>%
-    gsub('<div class="snam">',"",.) %>%
-    gsub(' <em.*',"",.) %>%
-    gsub('</div>',"",.)
+    html_text
   codes <- # Get species codes from eBird Taxonomy
     tax %>% filter(PRIMARY_COM_NAME %in% species_list) %>% use_series(SPECIES_CODE)
   for (i in 1:length(codes)){
