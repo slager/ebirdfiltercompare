@@ -16,7 +16,7 @@ Click "Clone or Download" above, then go find the zipped file on your computer, 
   
 ### 1b. Check to see if the eBird Taxonomy is current.
 
-Make sure the folder (ebird\_filter\_compare-master) contains the current eBird taxonomy in csv format (e.g. eBird\_Taxonomy\_v2018\_14Aug2018_utf8.csv). This readme was written in early 2019, so as of this writing, if it is after August 2019, you will have to download the new taxonomy.
+Make sure the folder contains the current eBird taxonomy in utf8 format as a csv. If it is after fall 2023, you will have to download the new taxonomy.
 
 ### 1c. Download the eBird filters for your region.
 
@@ -31,6 +31,8 @@ File > Save Page As
 Select 'Webpage, HTML Only'
 
 After you have done this, take a second to double check you have the right number of files saved in this folder --  you should have as many files as you have filters for your region or else it will cause trouble!
+
+You may also need to manually rename files from something.html to something_html
 
 ## 2. Setup R and RStudio
 
@@ -114,9 +116,9 @@ If you see error messages or any instances of FALSE in the output, it probably m
 
 ## 5.  Make sure the taxonomy is pointing at the correct file.
 
-If it's before August 2019, you can skip this entire step. If you are reading this in the distant future, after August 2019, and you've downloaded the eBird taxonomy version 2019 or later, you'll need to adjust this line in the code to point to the correct taxonomy filename.
+After fall 2023, you'll need to adjust this line in the code to point to the correct taxonomy filename (saved as csv, utf8).
 ```
-"eBird_Taxonomy_v2018_14Aug2018_utf8.csv" -> taxonomy_filename
+"eBird_Taxonomy_v2022.csv" -> taxonomy_filename
 ```
 
 ## 6. Run the code to crunch your filter comparisons!
