@@ -7,7 +7,6 @@
 load_required_packages <- function(){
 ## Load required packages
 library(magrittr)
-library(plyr)
 library(dplyr,warn.conflicts=F)
 library(rvest)
 cat("...done","\n")
