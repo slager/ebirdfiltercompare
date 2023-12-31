@@ -106,7 +106,7 @@ for (file in files){
     rvest::html_nodes(css='div[class="snam"]') %>%
     (rvest::html_text)
   codes <- # Get species codes from eBird Taxonomy
-    tax %>% dplyr::filter(comName %in% species_list) %>% magrittr::use_series(speciesCode)
+    tax %>% dplyr::filter(comName %in% species_list) %>% dplyr::pull(speciesCode)
   for (i in 1:length(codes)){
     ## Use CSS selectors to scrape data from HTML
     # Save nodeset1
