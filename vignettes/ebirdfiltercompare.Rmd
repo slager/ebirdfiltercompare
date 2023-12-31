@@ -42,7 +42,9 @@ Skip this entire step if you just want to use the built-in example files.
 
 ## Specify portions of filter names to be deleted
 
-These can be R regular expressions (see `?base::regex` for details). This example removes the word Wisconsin, two hyphens, two digits, and a period from the beginning of filter names. For custom usage, we recommend starting with an empty string (like in this `filter_suffix` example) for both, and adjusting regular expressions needed on a second run.
+We want to remove filter name prefixes and suffixes so that very long filter names won't take up precious space on the final output chart.
+
+This example removes the word Wisconsin, two hyphens, two digits, and a period from the beginning of filter names. For custom usage, we recommend starting with an empty string (like in this `filter_suffix` example) for both, and adjusting the prefix and suffix on a second run. These can be R regular expressions (see `?base::regex` for details).
 
 ```{r prefix_suffix}
 filter_prefix <- 'Wisconsin--\\d{2}\\.'
@@ -65,7 +67,9 @@ The files will initially be in alphabetical order, and the resulting regions her
 export_region_list_for_ordering(files, filter_prefix, filter_suffix) -> regions
 ```
 
-After you run this function, check your output directory for `regions.csv`, edit the file (e.g., in Excel) to adjust the order, and save the new file as `ordered_regions.csv`.
+After you run this function, check your output directory for `regions.csv`. Open the file in Excel or a similar program. Inspect the names of the filter regions to ensure that the filter name prefixes and suffixes were being deleted properly. If not, you can adjust the prefixes/suffixes and re-run the previous steps as necessary.
+
+In Excel, rank the filters in the order you want them to appear on the output chart. When eyeballing all your region's filters, presumably it's easiest to have similar filters displaying next to each other, and/or using a north to south or west to east gradient. The filters should be listed in descending order in only column A, without their filter prefix. Save this modified file, we suggest in the same output folder where it came from, changing the name to `ordered_regions.csv`.
 
 ## Import manually ordered list of regions
 
@@ -80,6 +84,8 @@ import_ordered_region_list() -> ordered_regions
 ```{r check_regions}
 check_regions(regions, ordered_regions)
 ```
+
+If you see error messages or any instances of FALSE in the output, it probably means you need to proofread your ordered list of filters, or the number of filter HTML files you have downloaded, because they don't match.
 
 ## Collect the taxa that appear in your filters
 
