@@ -73,7 +73,7 @@ compile_taxonomy <- function(files, regions, tax = rebird:::tax){
 } # end compile taxonomy function
 
 ## Create nested data structure and crunch the filters
-crunch_filters <- function(tax = rebird:::tax){
+crunch_filters <- function(files, species, ordered_regions, filter_prefix, filter_suffix, tax = rebird:::tax){
   cat("Preparing data structure...","\n")
   ## Create nested data structure
   filter_data <-
@@ -98,24 +98,24 @@ crunch_filters <- function(tax = rebird:::tax){
       html %>%
       rvest::html_nodes(css='#cl_name') %>%
       (rvest::html_text) %>%
-      unname %>%
-      gsub(filter_prefix,"",.) %>%
-      gsub(filter_suffix,"",.)
+      unname |>
+      gsub(filter_prefix,"", x = _) |>
+      gsub(filter_suffix,"", x = _)
     species_list <- # Species list for region
       html %>%
       rvest::html_nodes(css='div[class="snam"]') %>%
       (rvest::html_text)
     codes <- # Get species codes from eBird Taxonomy
-      tax %>% dplyr::filter(comName %in% species_list) %>% dplyr::pull(speciesCode)
+      tax %>% dplyr::filter(.data[['comName']] %in% species_list) %>% dplyr::pull(.data[['speciesCode']])
     for (i in 1:length(codes)){
       ## Use CSS selectors to scrape data from HTML
       # Save nodeset1
       nodeset1 <- html %>% rvest::html_nodes(css=paste0('#',codes[i],'_out'))
       widths <- nodeset1 %>%
         rvest::html_nodes(css='td[style]') %>%
-        rvest::html_attr('style') %>%
-        gsub('width:',"",.) %>%
-        gsub('%',"",.) %>%
+        rvest::html_attr('style') |>
+        gsub('width:',"", x = _) |>
+        gsub('%',"", x = _) %>%
         as.numeric
       if (length(widths) >0){
         filter_data[[species_list[i]]][[r]][['widths']] <- widths
@@ -155,10 +155,10 @@ crunch_filters <- function(tax = rebird:::tax){
 ## Make filename-friendly taxon names and taxonomic orders
 # tax_output <-
 # tax %>%
-# dplyr::filter(comName %in% species) %>%
-# select(taxonOrder,comName) %>%
+# dplyr::filter(.data[['comName']] %in% species) %>%
+# select(taxonOrder,.data[['comName']]) %>%
 # mutate(order = taxonOrder*1000,
-#        filename = comName %>%
+#        filename = .data[['comName']] %>%
 #                   gsub("[(]","_",.) %>%
 #                   gsub("[)]","_",.) %>%
 #                   gsub("[/]","_",.) %>%
@@ -229,7 +229,7 @@ calc_left_margin <- function(ordered_regions){
 
 
 # Function to draw main PDF!!
-generate_pdf <- function(ordered_regions){
+generate_pdf <- function(data, species, ordered_regions){
   cat("Generating PDF...","\n")
   
   grDevices::pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height(ordered_regions)) #Can adjust PDF paper size as needed
@@ -239,21 +239,21 @@ generate_pdf <- function(ordered_regions){
   for (s in species){
     
     # Get max number of sections for this species
-    maxn <- sapply(regions,function(x){data[[s]][[x]]$nsections}) %>% max
+    maxn <- sapply(ordered_regions,function(x){data[[s]][[x]]$nsections}) %>% max
     # Helper function to fill NAs to max number of sections
     fillNA <- function(x){c(x,rep(NA,maxn-length(x)))}
     # Create barplot matrix
     m <- lapply(rev(ordered_regions),function(x){
-      fillNA(data[[s]][[x]]$widths)}) %>% do.call(cbind,.)
+      fillNA(data[[s]][[x]]$widths)}) |> do.call(cbind, args = _)
     
     # matrix of limits used to select colors
     limits <- lapply(rev(ordered_regions),function(x){
-      fillNA(data[[s]][[x]]$limits)}) %>% do.call(cbind,.)
+      fillNA(data[[s]][[x]]$limits)}) |> do.call(cbind, args = _)
     
     
     ## Functions for implementing individual-species PDFs
-    #ord <- tax_output %>% dplyr::filter(comName==s) %>% select(order) %>% extract(1,1)
-    #fnm <- tax_output %>% dplyr::filter(comName==s) %>% select(filename) %>% extract(1,1)
+    #ord <- tax_output %>% dplyr::filter(.data[['comName']]==s) %>% select(order) %>% extract(1,1)
+    #fnm <- tax_output %>% dplyr::filter(.data[['comName']]==s) %>% select(filename) %>% extract(1,1)
     #pdf(paste0("output/",formatC(ord,format='d'),"_",fnm,".pdf"),10,14)
     
     ## Barplot
@@ -263,7 +263,7 @@ generate_pdf <- function(ordered_regions){
     b <- graphics::barplot(m_extend,beside=F,horiz=T,axes=F,col=colors,space=0.6)
     graphics::mtext(rev(ordered_regions),side=2,at=b,las=2)
     
-    for (i in 1:length(regions)){
+    for (i in 1:length(ordered_regions)){
       ## Draw date labels
       graphics::text(
         x = date_x(data[[s]][[rev(ordered_regions)[i]]]$widths),
@@ -290,7 +290,7 @@ generate_pdf <- function(ordered_regions){
 } # End generate_pdf()
 
 ## Write CSV version of PDF page number index
-generate_index <- function(){
+generate_index <- function(species){
   1:length(species) -> page_number
   cbind(page_number,taxon=species) %>%
     write.csv("output/pdf_index.csv",row.names=F)

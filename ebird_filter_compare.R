@@ -35,10 +35,10 @@ check_regions(regions, ordered_regions)
 compile_taxonomy(files, regions) -> species
 
 ## Pull filter data from the filter HTML files
-crunch_filters() -> data
+crunch_filters(files, species, ordered_regions, filter_prefix, filter_suffix) -> data
 
 ## Generate a PDF showing filter comparisons across regions
-generate_pdf(ordered_regions)
+generate_pdf(data, species, ordered_regions)
 
 ## Generate a CSV index to the PDF
-generate_index()
+generate_index(species)
