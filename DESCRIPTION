@@ -1,0 +1,30 @@
+Package: ebirdfiltercompare
+Title: Visualize Differences between eBird Filters
+Version: 0.0.0.9000
+Authors@R: c(
+    person("David", "Slager", , "slager@users.noreply.github.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-2525-2039")),
+    person("Nick", "Anich", role = "aut"),
+    person("Nicholas", "Walton", role = "aut")
+  )
+Description: This script is designed to be used by eBird Regional Editors to easily visualize differences among taxa filters in your regions.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    graphics,
+    grDevices,
+    magrittr,
+    rebird,
+    rlang,
+    rvest,
+    stats,
+    utils
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

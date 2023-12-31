@@ -1,0 +1,118 @@
+---
+title: "How to use eBird filter compare"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ebirdfiltercompare}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## First time setup
+
+Install R and RStudio and create a new Rstudio project, as needed. See README for details.
+
+## Load the R package
+
+```{r setup}
+library(ebirdfiltercompare)
+```
+
+## Obtain the filter html files that you want to use
+
+Skip this entire step if you just want to use the built-in example files.
+
+1. Save a copy of each your current eBird filters
+  - Using Google Chrome or Mozilla Firefox, log in to eBird Admin
+    - Note: Google Chrome browser seems to be saving html files in different way, so we recommend using Firefox to save html files
+  - Go to the filters tab
+  - Right-click on filter page > "View Page Source"
+  - File > Save Page As
+    - We recommend saving to a `filter_htm` folder inside your project directory
+  - Select 'Webpage, HTML Only'
+2. After you have done this, take a second to double check you have the right number of files saved in this folder -- you should have as many files as you have filters for your region or else it will cause trouble!
+3. Double check that there are no spaces or strange characters in your filter filenames
+
+## Specify portions of filter names to be deleted
+
+We want to remove filter name prefixes and suffixes so that very long filter names won't take up precious space on the final output chart.
+
+This example removes the word Wisconsin, two hyphens, two digits, and a period from the beginning of filter names. For custom usage, we recommend starting with an empty string (like in this `filter_suffix` example) for both, and adjusting the prefix and suffix on a second run. These can be R regular expressions (see `?base::regex` for details).
+
+```{r prefix_suffix}
+filter_prefix <- 'Wisconsin--\\d{2}\\.'
+filter_suffix <- ''
+```
+
+## Get list of filter filenames
+
+Scan a directory for the filter html files you downloaded. Running it with no arguments, like below, uses built-in example files. To use your files, provide the path to the folder you want to use. For example, you would use `get_filenames(path = 'filter_htm')`, if they are located in the `filter_htm` folder at the top level of your R project directory.
+
+```{r get_filenames}
+get_filenames() -> files
+```
+
+## Export CSV list of regions for manual ordering
+
+The files will initially be in alphabetical order, and the resulting regions here will be in that same order. This step exports a CSV you can manually edit to change the order of the regions as needed for eventual display. By default, the function outputs to the `output` folder in the current working directory and creates that folder if needed.
+
+```{r export_region_list_for_ordering}
+export_region_list_for_ordering(files, filter_prefix, filter_suffix) -> regions
+```
+
+After you run this function, check your output directory for `regions.csv`. Open the file in Excel or a similar program. Inspect the names of the filter regions to ensure that the filter name prefixes and suffixes were being deleted properly. If not, you can adjust the prefixes/suffixes and re-run the previous steps as necessary.
+
+In Excel, rank the filters in the order you want them to appear on the output chart. When eyeballing all your region's filters, presumably it's easiest to have similar filters displaying next to each other, and/or using a north to south or west to east gradient. The filters should be listed in descending order in only column A, without their filter prefix. Save this modified file, we suggest in the same output folder where it came from, changing the name to `ordered_regions.csv`.
+
+## Import manually ordered list of regions
+
+This step re-imports your ordered regions. Calling the function with no argument, like below, uses a built-in example file. For custom usage, you'll want to provide the file argument to the location of your own file, e.g. `import_ordered_region_list(file_path('output', 'ordered_regions.csv'))`
+
+```{r import_ordered_region_list}
+import_ordered_region_list() -> ordered_regions
+```
+
+## Check ordered_regions vs. regions for consistency
+
+```{r check_regions}
+check_regions(regions, ordered_regions)
+```
+
+If you see error messages or any instances of FALSE in the output, it probably means you need to proofread your ordered list of filters, or the number of filter HTML files you have downloaded, because they don't match.
+
+## Collect the taxa that appear in your filters
+
+```{r compile_taxonomy}
+compile_taxonomy(files, regions) -> species
+```
+
+## Extract filter data from the filter HTML files
+
+This can currently take about 30 seconds per filter due to many nested for loops in the code. This may be further optimized in the future for faster runs.
+
+```{r crunch_filters}
+crunch_filters(files, species, ordered_regions, filter_prefix, filter_suffix) -> data
+```
+
+## Generate a PDF showing filter comparisons across regions
+
+By default, the function outputs to the `output` folder in the current working directory and creates that folder if needed.
+
+```{r generate_pdf}
+generate_pdf(data, species, ordered_regions)
+```
+
+## Generate a CSV index to page numbers in the PDF
+
+By default, the function outputs to the `output` folder in the current working directory and creates that folder if needed.
+
+```{r generate_index}
+generate_index(species)
+```
