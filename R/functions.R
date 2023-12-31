@@ -238,10 +238,14 @@ calc_left_margin <- function(ordered_regions){
 
 
 # Function to draw main PDF!!
-generate_pdf <- function(data, species, ordered_regions){
+generate_pdf <- function(
+    data, species, ordered_regions,
+    output_directory = 'output'){
+  dir.create(output_directory, showWarnings = FALSE, recursive = TRUE)
+  output_file <- file.path(output_directory, 'taxa.pdf')
   cat("Generating PDF...","\n")
   
-  grDevices::pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height(ordered_regions)) #Can adjust PDF paper size as needed
+  grDevices::pdf(output_file,onefile=T,width=10,height=calc_pdf_height(ordered_regions)) #Can adjust PDF paper size as needed
   
   #s <- "Stilt Sandpiper"   # For testing
   
@@ -299,9 +303,11 @@ generate_pdf <- function(data, species, ordered_regions){
 } # End generate_pdf()
 
 ## Write CSV version of PDF page number index
-generate_index <- function(species){
+generate_index <- function(species, output_directory = 'output'){
+  dir.create(output_directory, showWarnings = FALSE, recursive = TRUE)
+  output_file <- file.path(output_directory, 'pdf_index.csv')
   1:length(species) -> page_number
   cbind(page_number,taxon=species) %>%
-    write.csv("output/pdf_index.csv",row.names=F)
+    write.csv(output_file,row.names=F)
   cat("...done","\n")
 } # end generate_index
