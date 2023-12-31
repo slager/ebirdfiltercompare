@@ -128,13 +128,13 @@ crunch_filters <- function(files, species, ordered_regions, filter_prefix, filte
       }
       # Save nodelim
       nodelim <- rvest::html_nodes(nodeset1,css='input[class^="lim"]')
-      limits <- nodeset1 %>%
-        { if (length(nodelim) > 0){
-          nodelim %>% rvest::html_attr('value')
-        } else {
-          rvest::html_nodes(.,css='span[class^="lim"]') %>% (rvest::html_text)}
-        } %>%
-        as.numeric
+      if (length(nodelim) > 0){
+        limits <- nodelim %>% rvest::html_attr('value')
+      } else {
+        limits <- rvest::html_nodes(nodeset1,css='span[class^="lim"]') %>%
+          (rvest::html_text)
+      }
+      limits <- as.numeric(limits)
       if (length(limits) > 0){
         filter_data[[species_list[i]]][[r]][['limits']] <- limits
       }
