@@ -6,7 +6,7 @@ get_filenames <- function(){
   files
 }
 
-export_region_list_for_ordering <- function(){
+export_region_list_for_ordering <- function(files, filter_prefix, filter_suffix){
   cat("Crunching region names from filter files...","\n")
   ## Read filter region names from HTML
   regions <-
@@ -14,9 +14,9 @@ export_region_list_for_ordering <- function(){
       (rvest::read_html)(paste0('filter_htm/',x)) %>%
         (rvest::html_nodes)(css='#cl_name') %>% (rvest::html_text)
     }) %>%
-    unname %>%
-    gsub(filter_prefix,"",.) %>%
-    gsub(filter_suffix,"",.)
+    unname |>
+    gsub(filter_prefix,"", x = _) |>
+    gsub(filter_suffix,"", x = _)
   write.csv(data.frame(REGION_NAME=regions),'regions.csv',row.names=F)
   cat("Regions CSV exported for manual ordering","\n")
   regions
@@ -257,7 +257,7 @@ generate_pdf <- function(ordered_regions){
     #pdf(paste0("output/",formatC(ord,format='d'),"_",fnm,".pdf"),10,14)
     
     ## Barplot
-    graphics::par(mar=c(1.1,calc_left_margin(),2.1,1.1)) #Can adjust left margin value (6.1) higher if your region mames are long
+    graphics::par(mar=c(1.1,calc_left_margin(ordered_regions),2.1,1.1)) #Can adjust left margin value (6.1) higher if your region mames are long
     colors <- get_colors(limits)
     m_extend <- extend_matrix(m)
     b <- graphics::barplot(m_extend,beside=F,horiz=T,axes=F,col=colors,space=0.6)

@@ -16,7 +16,7 @@ source(file.path('R', 'functions.R'))
 get_filenames() -> files
 
 ## Export CSV list of regions for manual ordering
-export_region_list_for_ordering() -> regions
+export_region_list_for_ordering(files, filter_prefix, filter_suffix) -> regions
 
 
 ####
