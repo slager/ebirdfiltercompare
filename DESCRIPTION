@@ -22,3 +22,7 @@ Imports:
     rvest,
     stats,
     utils
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
