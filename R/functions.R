@@ -9,7 +9,10 @@ get_filenames <- function(
   files
 }
 
-export_region_list_for_ordering <- function(files, filter_prefix, filter_suffix){
+export_region_list_for_ordering <- function(
+    files, filter_prefix, filter_suffix, output_directory = 'output'){
+  dir.create(output_directory, showWarnings = FALSE, recursive = TRUE)
+  output_file <- file.path(output_directory, 'regions.csv')
   cat("Crunching region names from filter files...","\n")
   ## Read filter region names from HTML
   regions <-
@@ -20,14 +23,17 @@ export_region_list_for_ordering <- function(files, filter_prefix, filter_suffix)
     unname |>
     gsub(filter_prefix,"", x = _) |>
     gsub(filter_suffix,"", x = _)
-  write.csv(data.frame(REGION_NAME=regions),'regions.csv',row.names=F)
+  write.csv(data.frame(REGION_NAME=regions),output_file,row.names=F)
   cat("Regions CSV exported for manual ordering","\n")
   regions
 } #end export region list for ordering
 
 ## Load custom-ordered regions created by user
-import_ordered_region_list <- function(){
-  ordered_regions <- read.csv('ordered_regions.csv',stringsAsFactors=F,header=T)[,1]
+import_ordered_region_list <- function(
+    file_path = system.file(
+      file.path('extdata', 'ordered_regions.csv'),
+      package = 'ebirdfiltercompare')){
+  ordered_regions <- read.csv(file_path,stringsAsFactors=F,header=T)[,1]
   cat("Ordered regions CSV imported","\n")
   ordered_regions
 }
