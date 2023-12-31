@@ -41,13 +41,8 @@ check_regions()
 
 ####
 
-
-## Import the latest eBird taxonomy
-"eBird_Taxonomy_v2022.csv" -> taxonomy_filename
-import_taxonomy() -> tax
-
 ## Compile the taxa from the list of filters
-compile_taxonomy() -> species
+compile_taxonomy(regions) -> species
 
 ## Pull filter data from the filter HTML files
 crunch_filters() -> data

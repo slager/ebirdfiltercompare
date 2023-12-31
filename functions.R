@@ -65,7 +65,7 @@ check_regions <- function(){
 
 ## Crunch the taxonomy
 
-compile_taxonomy <- function(){
+compile_taxonomy <- function(regions, tax = rebird:::tax){
 cat("Compiling taxonomy...","\n")
 ## Get full taxa list from each filter
 taxa <- sapply(regions,function(x) NULL)
@@ -82,15 +82,15 @@ species_from_filters <- taxa %>% Reduce(c,.) %>% unique
 ## Get list of unique taxa in taxonomic order
 species <-
   tax %>%
-  filter(PRIMARY_COM_NAME %in% species_from_filters) %>%
-  use_series(PRIMARY_COM_NAME)
+  filter(comName %in% species_from_filters) %>%
+  use_series(comName)
 
 cat("...done","\n")
 species
 } # end compile taxonomy function
 
 ## Create nested data structure and crunch the filters
-crunch_filters <- function(){
+crunch_filters <- function(tax = rebird:::tax){
 cat("Preparing data structure...","\n")
   ## Create nested data structure
   filter_data <-
@@ -123,7 +123,7 @@ for (file in files){
     html_nodes(css='div[class="snam"]') %>%
     html_text
   codes <- # Get species codes from eBird Taxonomy
-    tax %>% filter(PRIMARY_COM_NAME %in% species_list) %>% use_series(SPECIES_CODE)
+    tax %>% filter(comName %in% species_list) %>% use_series(speciesCode)
   for (i in 1:length(codes)){
     ## Use CSS selectors to scrape data from HTML
     # Save nodeset1
@@ -166,10 +166,10 @@ filter_data
 ## Make filename-friendly taxon names and taxonomic orders
 # tax_output <-
 # tax %>%
-# filter(PRIMARY_COM_NAME %in% species) %>%
-# select(TAXON_ORDER,PRIMARY_COM_NAME) %>%
-# mutate(order = TAXON_ORDER*1000,
-#        filename = PRIMARY_COM_NAME %>%
+# filter(comName %in% species) %>%
+# select(taxonOrder,comName) %>%
+# mutate(order = taxonOrder*1000,
+#        filename = comName %>%
 #                   gsub("[(]","_",.) %>%
 #                   gsub("[)]","_",.) %>%
 #                   gsub("[/]","_",.) %>%
@@ -263,8 +263,8 @@ limits <- lapply(rev(ordered_regions),function(x){
 
 
 ## Functions for implementing individual-species PDFs
-#ord <- tax_output %>% filter(PRIMARY_COM_NAME==s) %>% select(order) %>% extract(1,1)
-#fnm <- tax_output %>% filter(PRIMARY_COM_NAME==s) %>% select(filename) %>% extract(1,1)
+#ord <- tax_output %>% filter(comName==s) %>% select(order) %>% extract(1,1)
+#fnm <- tax_output %>% filter(comName==s) %>% select(filename) %>% extract(1,1)
 #pdf(paste0("output/",formatC(ord,format='d'),"_",fnm,".pdf"),10,14)
 
 ## Barplot
