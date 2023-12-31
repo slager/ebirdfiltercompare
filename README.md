@@ -1,6 +1,6 @@
 ## This script is designed to be used by eBird Regional Editors to easily visualize differences among taxa filters in your regions.
 
-![BTYW example](https://github.com/slager/ebird_filter_compare/blob/master/btyw.png)
+![BTYW example](https://github.com/slager/ebird_filter_compare/blob/master/inst/img/btyw.png)
  
 -------------------------------------------------------------------------------------------------------------------
 
