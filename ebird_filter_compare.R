@@ -17,7 +17,7 @@ filter_suffix <- ''
 
 
 ## Load the required functions
-source('functions.R')
+source(file.path('R', 'functions.R'))
 
 ## Load required packages (at beginning of each RStudio session)
 load_required_packages()

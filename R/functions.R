@@ -28,8 +28,8 @@ cat("Crunching region names from filter files...","\n")
 ## Read filter region names from HTML
 regions <-
   sapply(files,function(x){ # Easily parallelized but not worth it
-    read_html(paste0('filter_htm/',x)) %>%
-      html_nodes(css='#cl_name') %>% html_text
+    (rvest::read_html)(paste0('filter_htm/',x)) %>%
+      (rvest::html_nodes)(css='#cl_name') %>% (rvest::html_text)
   }) %>%
   unname %>%
   gsub(filter_prefix,"",.) %>%
@@ -71,9 +71,9 @@ cat("Compiling taxonomy...","\n")
 taxa <- sapply(regions,function(x) NULL)
 for (i in 1:length(files)){
     taxa[[regions[i]]] <-
-      read_html(paste0('filter_htm/',files[i])) %>%
-      html_nodes(css='div[class="snam"]') %>%
-      html_text
+      rvest::read_html(paste0('filter_htm/',files[i])) %>%
+      rvest::html_nodes(css='div[class="snam"]') %>%
+      (rvest::html_text)
 }
 
 ## Collect unique taxa
@@ -82,8 +82,8 @@ species_from_filters <- taxa %>% Reduce(c,.) %>% unique
 ## Get list of unique taxa in taxonomic order
 species <-
   tax %>%
-  filter(comName %in% species_from_filters) %>%
-  use_series(comName)
+  dplyr::filter(comName %in% species_from_filters) %>%
+  magrittr::use_series(comName)
 
 cat("...done","\n")
 species
@@ -110,27 +110,27 @@ cat(length(files),"filters to crunch","\n")
 ## For each filter...
 for (file in files){
   Sys.time() -> begin_time
-  html <- read_html(paste0('filter_htm/',file))
+  html <- rvest::read_html(paste0('filter_htm/',file))
   r <- # Region name
     html %>%
-    html_nodes(css='#cl_name') %>%
-    html_text %>%
+    rvest::html_nodes(css='#cl_name') %>%
+    (rvest::html_text) %>%
     unname %>%
     gsub(filter_prefix,"",.) %>%
     gsub(filter_suffix,"",.)
   species_list <- # Species list for region
     html %>%
-    html_nodes(css='div[class="snam"]') %>%
-    html_text
+    rvest::html_nodes(css='div[class="snam"]') %>%
+    (rvest::html_text)
   codes <- # Get species codes from eBird Taxonomy
-    tax %>% filter(comName %in% species_list) %>% use_series(speciesCode)
+    tax %>% dplyr::filter(comName %in% species_list) %>% magrittr::use_series(speciesCode)
   for (i in 1:length(codes)){
     ## Use CSS selectors to scrape data from HTML
     # Save nodeset1
-    nodeset1 <- html %>% html_nodes(css=paste0('#',codes[i],'_out'))
+    nodeset1 <- html %>% rvest::html_nodes(css=paste0('#',codes[i],'_out'))
     widths <- nodeset1 %>%
-      html_nodes(css='td[style]') %>%
-      html_attr('style') %>%
+      rvest::html_nodes(css='td[style]') %>%
+      rvest::html_attr('style') %>%
       gsub('width:',"",.) %>%
       gsub('%',"",.) %>%
       as.numeric
@@ -138,18 +138,18 @@ for (file in files){
       filter_data[[species_list[i]]][[r]][['widths']] <- widths
     }
     dates <- nodeset1 %>%
-      html_nodes(css='.dt') %>%
-      html_text
+      rvest::html_nodes(css='.dt') %>%
+      (rvest::html_text)
     if (length(dates) > 0){
       filter_data[[species_list[i]]][[r]][['dates']] <- dates
     }
     # Save nodelim
-    nodelim <- html_nodes(nodeset1,css='input[class^="lim"]')
+    nodelim <- rvest::html_nodes(nodeset1,css='input[class^="lim"]')
     limits <- nodeset1 %>%
       { if (length(nodelim) > 0){
-        nodelim %>% html_attr('value')
+        nodelim %>% rvest::html_attr('value')
       } else {
-        html_nodes(.,css='span[class^="lim"]') %>% html_text}
+        rvest::html_nodes(.,css='span[class^="lim"]') %>% (rvest::html_text)}
       } %>%
       as.numeric
     if (length(limits) > 0){
@@ -172,7 +172,7 @@ filter_data
 ## Make filename-friendly taxon names and taxonomic orders
 # tax_output <-
 # tax %>%
-# filter(comName %in% species) %>%
+# dplyr::filter(comName %in% species) %>%
 # select(taxonOrder,comName) %>%
 # mutate(order = taxonOrder*1000,
 #        filename = comName %>%
@@ -249,7 +249,7 @@ calc_left_margin <- function(){
 generate_pdf <- function(){
 cat("Generating PDF...","\n")
 
-pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height()) #Can adjust PDF paper size as needed
+grDevices::pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height()) #Can adjust PDF paper size as needed
 
 #s <- "Stilt Sandpiper"   # For testing
 
@@ -269,26 +269,26 @@ limits <- lapply(rev(ordered_regions),function(x){
 
 
 ## Functions for implementing individual-species PDFs
-#ord <- tax_output %>% filter(comName==s) %>% select(order) %>% extract(1,1)
-#fnm <- tax_output %>% filter(comName==s) %>% select(filename) %>% extract(1,1)
+#ord <- tax_output %>% dplyr::filter(comName==s) %>% select(order) %>% extract(1,1)
+#fnm <- tax_output %>% dplyr::filter(comName==s) %>% select(filename) %>% extract(1,1)
 #pdf(paste0("output/",formatC(ord,format='d'),"_",fnm,".pdf"),10,14)
 
 ## Barplot
-par(mar=c(1.1,calc_left_margin(),2.1,1.1)) #Can adjust left margin value (6.1) higher if your region mames are long
+graphics::par(mar=c(1.1,calc_left_margin(),2.1,1.1)) #Can adjust left margin value (6.1) higher if your region mames are long
 colors <- get_colors(limits)
 m_extend <- extend_matrix(m)
-b <- barplot(m_extend,beside=F,horiz=T,axes=F,col=colors,space=0.6)
-mtext(rev(ordered_regions),side=2,at=b,las=2)
+b <- graphics::barplot(m_extend,beside=F,horiz=T,axes=F,col=colors,space=0.6)
+graphics::mtext(rev(ordered_regions),side=2,at=b,las=2)
 
 for (i in 1:length(regions)){
   ## Draw date labels
-  text(
+  graphics::text(
     x = date_x(data[[s]][[rev(ordered_regions)[i]]]$widths),
     y = b[i] + (b[2]-b[1])*.45,
     labels = data[[s]][[rev(ordered_regions)[i]]]$dates,
     pos=4,offset=0,cex=0.6)
   ## Draw filter limits
-  text(
+  graphics::text(
     x = limit_x(data[[s]][[rev(ordered_regions)[i]]]$widths),
     y = b[i],
     labels= replaceNA(data[[s]][[rev(ordered_regions)[i]]]$limits), #can remove replaceNA after adjusting code elsewhere
@@ -296,13 +296,13 @@ for (i in 1:length(regions)){
 }
 
 ## Draw taxon title
-mtext(side=3,at=50,text=s,cex=1.25)
+graphics::mtext(side=3,at=50,text=s,cex=1.25)
 
 ## Draw timestamp
-mtext(side=1,at=50,text=paste0("Generated ",format(Sys.time(),'%d %B %Y %H:%M:%S')),cex=0.75)
+graphics::mtext(side=1,at=50,text=paste0("Generated ",format(Sys.time(),'%d %B %Y %H:%M:%S')),cex=0.75)
 #dev.off() # For individual-taxon PDFs
 }
-dev.off()
+grDevices::dev.off()
 cat("...done","\n")
 } # End generate_pdf()
 
