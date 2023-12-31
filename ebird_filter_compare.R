@@ -51,7 +51,6 @@ compile_taxonomy() -> species
 
 ## Pull filter data from the filter HTML files
 crunch_filters() -> data
-#readRDS("filter_data.RDS") -> data
 
 ## Generate a PDF showing filter comparisons across regions
 generate_pdf()
