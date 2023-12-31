@@ -26,19 +26,19 @@ export_region_list_for_ordering() -> regions
 import_ordered_region_list() -> ordered_regions
 
 ## Check ordered_regions vs. regions for consistency
-check_regions()
+check_regions(regions, ordered_regions)
 
 
 ####
 
 ## Compile the taxa from the list of filters
-compile_taxonomy(regions) -> species
+compile_taxonomy(files, regions) -> species
 
 ## Pull filter data from the filter HTML files
 crunch_filters() -> data
 
 ## Generate a PDF showing filter comparisons across regions
-generate_pdf()
+generate_pdf(ordered_regions)
 
 ## Generate a CSV index to the PDF
 generate_index()

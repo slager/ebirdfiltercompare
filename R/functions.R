@@ -29,7 +29,7 @@ cat("Ordered regions CSV imported","\n")
 ordered_regions
 }
 
-check_regions <- function(){
+check_regions <- function(regions, ordered_regions){
   if (!all(regions %in% ordered_regions)){
     message("Error: Not all regions found in ordered regions:")
     print(regions %in% ordered_regions)
@@ -48,7 +48,7 @@ check_regions <- function(){
 
 ## Crunch the taxonomy
 
-compile_taxonomy <- function(regions, tax = rebird:::tax){
+compile_taxonomy <- function(files, regions, tax = rebird:::tax){
 cat("Compiling taxonomy...","\n")
 ## Get full taxa list from each filter
 taxa <- sapply(regions,function(x) NULL)
@@ -60,13 +60,13 @@ for (i in 1:length(files)){
 }
 
 ## Collect unique taxa
-species_from_filters <- taxa %>% Reduce(c,.) %>% unique
+species_from_filters <- taxa |> Reduce(f = c, x = _) %>% unique
 
 ## Get list of unique taxa in taxonomic order
 species <-
   tax %>%
-  dplyr::filter(comName %in% species_from_filters) %>%
-  magrittr::use_series(comName)
+  dplyr::filter(.data[['comName']] %in% species_from_filters) %>%
+  dplyr::pull(.data[['comName']])
 
 cat("...done","\n")
 species
@@ -216,23 +216,23 @@ extend_matrix <- function(m) {
 
 
 # Helper function to create pretty pdf height
-calc_pdf_height <- function(){
-  length(files)*(14 - 1.34) / 37 + 1.34
+calc_pdf_height <- function(ordered_regions){
+  length(ordered_regions)*(14 - 1.34) / 37 + 1.34
 }
 
 
 # Helper function to create pretty left margin width
-calc_left_margin <- function(){
+calc_left_margin <- function(ordered_regions){
   (ordered_regions %>% nchar %>% max)/12*6
 }
 
 
 
 # Function to draw main PDF!!
-generate_pdf <- function(){
+generate_pdf <- function(ordered_regions){
 cat("Generating PDF...","\n")
 
-grDevices::pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height()) #Can adjust PDF paper size as needed
+grDevices::pdf(paste0("output/taxa.pdf"),onefile=T,width=10,height=calc_pdf_height(ordered_regions)) #Can adjust PDF paper size as needed
 
 #s <- "Stilt Sandpiper"   # For testing
 

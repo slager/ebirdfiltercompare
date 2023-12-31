@@ -17,6 +17,8 @@ Imports:
     graphics,
     grDevices,
     magrittr,
+    rebird,
+    rlang,
     rvest,
     stats,
     utils
