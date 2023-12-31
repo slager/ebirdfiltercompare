@@ -1,4 +1,10 @@
 
+#' Get filter html filenames
+#'
+#' @param path Path to check for filter html files. Defaults to package example.
+#'
+#' @return Vector of filter html file paths
+#' @export
 get_filenames <- function(
     path = system.file(
       file.path('extdata', 'filter_htm'),
@@ -9,6 +15,17 @@ get_filenames <- function(
   files
 }
 
+#' Export regions.csv list for manual ordering
+#'
+#' @param files Vector of filter html file paths
+#' @param filter_prefix Regular expression to exclude from beginning of filter 
+#' names
+#' @param filter_suffix Regular expression to exclude from end of filter names
+#' @param output_directory Directory to output regions.csv file. Silently 
+#' created if missing. Defaults to 'output' subfolder in current directory
+#'
+#' @return Unordered vector of trimmed region names
+#' @export
 export_region_list_for_ordering <- function(
     files, filter_prefix, filter_suffix, output_directory = 'output'){
   dir.create(output_directory, showWarnings = FALSE, recursive = TRUE)
@@ -28,7 +45,12 @@ export_region_list_for_ordering <- function(
   regions
 } #end export region list for ordering
 
-## Load custom-ordered regions created by user
+#' Load custom-ordered regions created by user
+#'
+#' @param file_path Path of manually ordered regions CSV file
+#'
+#' @return Vector of manually ordered region names
+#' @export
 import_ordered_region_list <- function(
     file_path = system.file(
       file.path('extdata', 'ordered_regions.csv'),
@@ -38,6 +60,13 @@ import_ordered_region_list <- function(
   ordered_regions
 }
 
+#' Check that ordered regions match original regions
+#'
+#' @param regions Vector of regions
+#' @param ordered_regions Vector of ordered regions
+#'
+#' @return Printed informational statements
+#' @export
 check_regions <- function(regions, ordered_regions){
   if (!all(regions %in% ordered_regions)){
     message("Error: Not all regions found in ordered regions:")
@@ -49,14 +78,18 @@ check_regions <- function(regions, ordered_regions){
   }
   cat("Region name check complete.","\n","Found",length(ordered_regions),"ordered regions:","\n")
   print(ordered_regions)
-} # end check regions function
+  invisible(NULL)
+}
 
-## Check that custom region order vector is correct
-#regions %in% ordered_regions
-#ordered_regions %in% regions
-
-## Crunch the taxonomy
-
+#' Crunch the taxonomy
+#'
+#' @param files Vector of html file paths to crunch
+#' @param regions Vector of region names to crunch, matching order of files
+#' @param tax eBird taxonomy to use. Defaults to current taxonomy object from package
+#' rebird
+#'
+#' @return Vector of species names found across the provided filters
+#' @export
 compile_taxonomy <- function(files, regions, tax = rebird:::tax){
   cat("Compiling taxonomy...","\n")
   ## Get full taxa list from each filter
@@ -81,7 +114,18 @@ compile_taxonomy <- function(files, regions, tax = rebird:::tax){
   species
 } # end compile taxonomy function
 
-## Create nested data structure and crunch the filters
+#' Create nested data structure and crunch the filters
+#'
+#' @param files Vector of filter html files to crunch
+#' @param species Vector of species names to crunch
+#' @param ordered_regions Ordered vector of regions, as desired in output
+#' @param filter_prefix Regular expression to remove from beginning of filter
+#' names
+#' @param filter_suffix Regular expression to remove from end of filter names
+#' @param tax eBird taxonomy to use. Defaults to current taxonomy object from package
+#' rebird
+#' @return Nested list containing structured filter information
+#' @export
 crunch_filters <- function(files, species, ordered_regions, filter_prefix, filter_suffix, tax = rebird:::tax){
   cat("Preparing data structure...","\n")
   ## Create nested data structure
@@ -161,26 +205,9 @@ crunch_filters <- function(files, species, ordered_regions, filter_prefix, filte
   filter_data
 } # End crunch_filters
 
-## Make filename-friendly taxon names and taxonomic orders
-# tax_output <-
-# tax %>%
-# dplyr::filter(.data[['comName']] %in% species) %>%
-# select(taxonOrder,.data[['comName']]) %>%
-# mutate(order = taxonOrder*1000,
-#        filename = .data[['comName']] %>%
-#                   gsub("[(]","_",.) %>%
-#                   gsub("[)]","_",.) %>%
-#                   gsub("[/]","_",.) %>%
-#                   gsub("[']","_",.) %>%
-#                   gsub(" ","_",.)
-# )
-
-
-
 # Helper functions for X-position of text
 date_x <- function(x){c(0,cumsum(x[1:(length(x)-1)]))}
 limit_x <- function(x){date_x(x)+x/2}
-
 
 # Helper function to replace as.character(NA) with "NA"
 replaceNA <- function(x){
@@ -188,21 +215,17 @@ replaceNA <- function(x){
   x
 }
 
-
 # function to generate colors
 get_colors <- function(m) {
   colors   <- c("white", "#EDF8E9", "#C7E9C0", "#A1D99B", "#74C476", "#41AB5D",
                 "#238B45", "#005A32")
-  
   # could also use something like this
   # get_cols <- colorRampPalette(c("white", "darkgreen"))
   # colors <- get_cols(8)
-  
   colors   <- colors[findInterval(m, c(0, 1, 6, 11, 51, 101, 1001, 10001, Inf))]
   colors[is.na(colors)] <- "lightgray"
   colors
 }
-
 
 
 # function to extend matrix with 0s to work around the color limits of barplot
@@ -211,33 +234,35 @@ extend_matrix <- function(m) {
   ncol_in <- ncol(m)
   nrow_out <- nrow_in * ncol_in
   out <- matrix(0, ncol = ncol_in, nrow = nrow_out)
-  
   starts <- seq(1, nrow_out - nrow_in + 1, by = nrow_in)
-  
   for (i in seq_len(ncol_in)) {
     start <- starts[i]
     rows <- start:(start + nrow_in - 1)
     out[rows, i] <- m[, i]
   }
-  
   out
 }
-
 
 # Helper function to create pretty pdf height
 calc_pdf_height <- function(ordered_regions){
   length(ordered_regions)*(14 - 1.34) / 37 + 1.34
 }
 
-
 # Helper function to create pretty left margin width
 calc_left_margin <- function(ordered_regions){
   (ordered_regions %>% nchar %>% max)/12*6
 }
 
-
-
-# Function to draw main PDF!!
+#' Function to draw main PDF
+#'
+#' @param data Nested list containing structured filter information
+#' @param species Vector of species names present across all the filters
+#' @param ordered_regions Ordered vector of regions, as desired in output
+#' @param output_directory Directory to output PDF file. Defaults to 'output'. 
+#' Silently created if missing.
+#'
+#' @return Nothing. Side effect is taxa.pdf is written to output directory
+#' @export
 generate_pdf <- function(
     data, species, ordered_regions,
     output_directory = 'output'){
@@ -300,9 +325,18 @@ generate_pdf <- function(
   }
   grDevices::dev.off()
   cat("...done","\n")
-} # End generate_pdf()
+  invisible(NULL)
+}
 
-## Write CSV version of PDF page number index
+#' Write CSV version of PDF page number index
+#'
+#' @param species Vector of species names found across the filters
+#' @param output_directory Directory to write the species index CSV. Silently
+#' created if missing.
+#'
+#' @return Nothing. Side effect is the index CSV file written to the output
+#' directory.
+#' @export
 generate_index <- function(species, output_directory = 'output'){
   dir.create(output_directory, showWarnings = FALSE, recursive = TRUE)
   output_file <- file.path(output_directory, 'pdf_index.csv')
@@ -310,4 +344,5 @@ generate_index <- function(species, output_directory = 'output'){
   cbind(page_number,taxon=species) %>%
     write.csv(output_file,row.names=F)
   cat("...done","\n")
-} # end generate_index
+  invisible(NULL)
+}
