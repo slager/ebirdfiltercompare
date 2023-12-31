@@ -65,12 +65,6 @@ check_regions <- function(){
 
 ## Crunch the taxonomy
 
-import_taxonomy <- function(){
-## Import eBird taxonomy
-cat("...done","\n")
-read.csv(taxonomy_filename,stringsAsFactors=F)
-}
-
 compile_taxonomy <- function(){
 cat("Compiling taxonomy...","\n")
 ## Get full taxa list from each filter
