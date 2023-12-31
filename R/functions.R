@@ -1,8 +1,11 @@
 
-get_filenames <- function(){
+get_filenames <- function(
+    path = system.file(
+      file.path('extdata', 'filter_htm'),
+      package = 'ebirdfiltercompare')){
   ## Get filter filenames
-  files <- list.files('filter_htm')
-  cat("Found",length(files),"files in filter_htm folder","\n")
+  files <- list.files(path, full.names = TRUE)
+  cat("Found",length(files),"filter html files","\n")
   files
 }
 
@@ -11,7 +14,7 @@ export_region_list_for_ordering <- function(files, filter_prefix, filter_suffix)
   ## Read filter region names from HTML
   regions <-
     sapply(files,function(x){ # Easily parallelized but not worth it
-      (rvest::read_html)(paste0('filter_htm/',x)) %>%
+      (rvest::read_html)(x) %>%
         (rvest::html_nodes)(css='#cl_name') %>% (rvest::html_text)
     }) %>%
     unname |>
@@ -54,7 +57,7 @@ compile_taxonomy <- function(files, regions, tax = rebird:::tax){
   taxa <- sapply(regions,function(x) NULL)
   for (i in 1:length(files)){
     taxa[[regions[i]]] <-
-      rvest::read_html(paste0('filter_htm/',files[i])) %>%
+      rvest::read_html(files[i]) %>%
       rvest::html_nodes(css='div[class="snam"]') %>%
       (rvest::html_text)
   }
@@ -93,7 +96,7 @@ crunch_filters <- function(files, species, ordered_regions, filter_prefix, filte
   ## For each filter...
   for (file in files){
     Sys.time() -> begin_time
-    html <- rvest::read_html(paste0('filter_htm/',file))
+    html <- rvest::read_html(file)
     r <- # Region name
       html %>%
       rvest::html_nodes(css='#cl_name') %>%
