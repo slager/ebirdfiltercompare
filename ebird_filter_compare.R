@@ -9,8 +9,8 @@
 
 
 ## Specify portions of filter names to be deleted
-filter_prefix <- 'Washington--'
-filter_suffix <- ' Count.*'
+filter_prefix <- 'Wisconsin--\\d{2}\\.'
+filter_suffix <- ''
 
 
 ####
