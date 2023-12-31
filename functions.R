@@ -166,10 +166,7 @@ for (file in files){
   cat(tracker,"filters crunched","\n")
   } # End big for loop for crunching
 
-## Save the data that took so long to scrape together
-saveRDS(filter_data,"filter_data.RDS")
 filter_data
-#readRDS("filter_data.RDS") #Load the file
 } # End crunch_filters
 
 ## Make filename-friendly taxon names and taxonomic orders
