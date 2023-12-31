@@ -128,27 +128,33 @@ for (file in files){
     ## Use CSS selectors to scrape data from HTML
     # Save nodeset1
     nodeset1 <- html %>% html_nodes(css=paste0('#',codes[i],'_out'))
-    filter_data[[species_list[i]]][[r]][['widths']] <-
-      nodeset1 %>%
+    widths <- nodeset1 %>%
       html_nodes(css='td[style]') %>%
       html_attr('style') %>%
       gsub('width:',"",.) %>%
       gsub('%',"",.) %>%
       as.numeric
-    filter_data[[species_list[i]]][[r]][['dates']] <-
-      nodeset1 %>%
+    if (length(widths) >0){
+      filter_data[[species_list[i]]][[r]][['widths']] <- widths
+    }
+    dates <- nodeset1 %>%
       html_nodes(css='.dt') %>%
       html_text
+    if (length(dates) > 0){
+      filter_data[[species_list[i]]][[r]][['dates']] <- dates
+    }
     # Save nodelim
     nodelim <- html_nodes(nodeset1,css='input[class^="lim"]')
-    filter_data[[species_list[i]]][[r]][['limits']] <-
-      nodeset1 %>%
+    limits <- nodeset1 %>%
       { if (length(nodelim) > 0){
         nodelim %>% html_attr('value')
-        } else {
+      } else {
         html_nodes(.,css='span[class^="lim"]') %>% html_text}
       } %>%
       as.numeric
+    if (length(limits) > 0){
+      filter_data[[species_list[i]]][[r]][['limits']] <- limits
+    }
     filter_data[[species_list[i]]][[r]][['nsections']] <- length(filter_data[[species_list[i]]][[r]][['limits']])
   }
   tracker + 1 -> tracker
