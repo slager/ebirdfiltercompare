@@ -1,10 +1,3 @@
-## Install required packages (only do the very first time)
-#install.packages('magrittr')
-#install.packages('plyr')
-#install.packages('dplyr')
-#install.packages('rvest')
-
-
 ####
 
 
@@ -18,9 +11,6 @@ filter_suffix <- ''
 
 ## Load the required functions
 source(file.path('R', 'functions.R'))
-
-## Load required packages (at beginning of each RStudio session)
-load_required_packages()
 
 ## Get list of filter filenames
 get_filenames() -> files

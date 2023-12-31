@@ -1,20 +1,3 @@
-## Install required packages (if needed)
-#install.packages('magrittr')
-#install.packages('plyr')
-#install.packages('dplyr')
-#install.packages('rvest')
-
-load_required_packages <- function(){
-## Load required packages
-library(magrittr)
-library(dplyr,warn.conflicts=F)
-library(rvest)
-cat("...done","\n")
-}
-
-# Portions of filter titles to be deleted (Uncomment if not in function mode)
-#filter_prefix <- 'Washington--'
-#filter_suffix <- ' Count.*'
 
 get_filenames <- function(){
 ## Get filter filenames
